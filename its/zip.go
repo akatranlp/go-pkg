@@ -19,3 +19,14 @@ func Zip[T, U any](seq1 iter.Seq[T], seq2 iter.Seq[U]) iter.Seq2[T, U] {
 		}
 	}
 }
+
+func ZipSlices[T, K any](slice1 []T, slice2 []K) iter.Seq2[T, K] {
+	length := max(len(slice1), len(slice2))
+	return func(yield func(T, K) bool) {
+		for i := range length {
+			if !yield(slice1[i], slice2[i]) {
+				return
+			}
+		}
+	}
+}
